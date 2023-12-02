@@ -17,3 +17,6 @@ CREATE TABLE `hms` (
 ### ****Copy files to htdocs folder****
 
 Download the above files. Create a folder named *hms* inside *htdocs* folder in *xampp* directory. Finally, copy the *hms* folder inside *htdocs* folder. Now, visit [localhost/hms](http://localhost/hms) in your browser and you should see the application.
+
+<h1> Edited BY HRS </h1>
+
