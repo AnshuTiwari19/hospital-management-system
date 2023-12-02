@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Use prepared statement to prevent SQL injection
-    $sql = "INSERT INTO `doctor`(`doctor_id`, `name`, `specialization`, `license_no`) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO `doctor`(`doctor_id`, `name`, `specialization`, `license_no`) VALUES ($doctor_id, $name, $specialization, $license_no)";
     $stmt = $connection->prepare($sql);
     $stmt->bind_param("isss", $doctor_id, $name, $specialization, $license_no);
     
