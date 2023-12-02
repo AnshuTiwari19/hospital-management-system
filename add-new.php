@@ -2,7 +2,7 @@
 include "db_conn.php";
 
 if (isset($_POST["submit"])) {
-   $doctor_id = $_POST['doctor_id'];
+   $doctor_id = $_GET['doctor_id'];
    $name = $_POST['name'];
    $specialization = $_POST['specialization'];
    $license_no = $_POST['license_no'];
