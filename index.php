@@ -56,22 +56,23 @@ include "db_conn.php";
       <tbody>
         <?php
         $sql = "SELECT * FROM `doctor`";
-        $result = mysqli_query($conn, $sql);
-        while($row = $result-> fetch_assoc()) {
-        ?>
-          <tr>
-            <td><?php echo $row["doctor_id"] ?></td>
-            <td><?php echo $row["name"] ?></td>
-            <td><?php echo $row["specialization"] ?></td>
-            <td><?php echo $row["license_no"] ?></td>
-            <td>
-              <a href="edit.php?id=<?php echo $row["doctor_id"] ?>" class="link-dark"><i class="fa-solid fa-pen-to-square fs-5 me-3"></i></a>
-              <a href="delete.php?id=<?php echo $row["doctor_id"] ?>" class="link-dark"><i class="fa-solid fa-trash fs-5"></i></a>
-            </td>
-          </tr>
-        <?php
-        }
-        ?>
+$result = mysqli_query($conn, $sql);
+while ($row = $result->fetch_object()) {
+?>
+    <tr>
+        <td><?= $row->doctor_id ?></td>
+        <td><?= $row->name ?></td>
+        <td><?= $row->specialization ?></td>
+        <td><?= $row->license_no ?></td>
+        <td>
+            <a href="edit.php?id=<?= $row->doctor_id ?>" class="link-dark"><i class="fa-solid fa-pen-to-square fs-5 me-3"></i></a>
+            <a href="delete.php?id=<?= $row->doctor_id ?>" class="link-dark"><i class="fa-solid fa-trash fs-5"></i></a>
+        </td>
+    </tr>
+<?php
+}
+?>
+
       </tbody>
     </table>
   </div>
