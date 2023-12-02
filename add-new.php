@@ -1,65 +1,33 @@
 <?php
 include "db_conn.php";
 
-if (isset($_POST["submit"])) {
-   $doctor_id = $_GET['doctor_id'];
-   $name = $_POST['name'];
-   $specialization = $_POST['specialization'];
-   $license_no = $_POST['license_no'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $doctor_id = $_POST['doctor_id'];
+    $name = $_POST['name'];
+    $specialization = $_POST['specialization'];
+    $license_no = $_POST['license_no'];
 
-   $sql = "INSERT INTO `doctor`(`doctor_id`, `name`, `specialization`, `license_no`, ) VALUES ('$doctor_id','$name','$specialization','$license_no')";
-   $sql = "SELECT * FROM doctor";
-   $result = mysqli_query($conn, $sql);
- 
-   if ($result) {
-     // Check if there are rows returned
-     if (mysqli_num_rows($result) > 0) {
-       // Fetch a single row
-       $row = mysqli_fetch_assoc($result);
- 
-       // Check if a row was fetched
-       if ($row) {
-         echo "<table>";
-         echo "<tr>
-                 <th>Doctor ID</th>
-                 <th>Name</th>
-                 <th>Specialization</th>
-                 <th>License Number</th>
-               </tr>";
-         
-         // Display the data in the table
-         echo "<tr>
-                 <td>" . $row["doctor_id"] . "</td>
-                 <td>" . $row["name"] . "</td>
-                 <td>" . $row["specialization"] . "</td>
-                 <td>" . $row["license_no"] . "</td>
-               </tr>";
-         
-         echo "</table>";
-       } else {
-         echo "No data found in the 'hms' table.";
-       }
-     } else {
-       echo "No rows found in the 'hms' table.";
-     }
-   } else {
-     // Display an error message if the query fails
-     echo "Failed: " . mysqli_error($conn);
-   }
-   ?>
- 
-<?php
-   if ($result) {
-      header("Location: index.php?msg=New record created successfully");
-   } else {
-      echo "Failed: " . mysqli_error($conn);
-   }
+    // Validate inputs (add more validation if needed)
+    if (empty($doctor_id) || empty($name) || empty($specialization) || empty($license_no)) {
+        echo "All fields are required.";
+        exit();
+    }
+
+    // Use prepared statement to prevent SQL injection
+    $sql = "INSERT INTO `doctor`(`doctor_id`, `name`, `specialization`, `license_no`) VALUES (?, ?, ?, ?)";
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param("isss", $doctor_id, $name, $specialization, $license_no);
+    
+    if ($stmt->execute()) {
+        header("Location: index.php?msg=New record created successfully");
+        exit();
+    } else {
+        // Display an error message if the query fails
+        echo "Failed: " . $stmt->error;
+    }
 }
+
 ?>
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -94,23 +62,24 @@ if (isset($_POST["submit"])) {
             <div class="row mb-3">
                <div class="col">
                   <label class="form-label">doctor_id</label>
-                  <input type="number" class="form-control" name="doctor_id" placeholder="please enter the doctor_id">
+                  <input type="number" class="form-control" name="doctor_id" placeholder="please enter the doctor_id" required>
                </div>
 
                <div class="col">
                   <label class="form-label">name:</label>
-                  <input type="text" class="form-control" name="name" placeholder="please enter the doctor name">
+                  <input type="text" class="form-control" name="name" placeholder="please enter the doctor name" required>
                </div>
             </div>
 
-            <div class="col">
-               <label class="form-label">specialization:</label>
-               <input type="text" class="form-control" name="specialization" placeholder="enter the doctor specialization">
-            </div>
+            <div class="row mb-3">
+               <div class="col">
+                  <label class="form-label">specialization:</label>
+                  <input type="text" class="form-control" name="specialization" placeholder="enter the doctor specialization" required>
+               </div>
 
-            <div class="col">
+               <div class="col">
                   <label class="form-label">license_no:</label>
-                  <input type="number" class="form-control" name="license_no" placeholder="please enter the license_no">
+                  <input type="number" class="form-control" name="license_no" placeholder="please enter the license_no" required>
                </div>
             </div>
 
