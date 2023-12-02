@@ -1,14 +1,19 @@
 <?php
 include "db_conn.php";
-?>
-<?php
-$sql = "DELETE FROM `doctor` WHERE doctor_id = $doctor_id";
-$result = mysqli_query($conn, $sql);
 
-while($row = mysqli_fetch_assoc($result));
-if ($result) {
-  header("Location: index.php?msg=Data deleted successfully");
+if (isset($_GET["doctor_id"])) {
+    $doctor_id = $_GET["doctor_id"];
+
+    $sql = "DELETE FROM `doctor` WHERE doctor_id = $doctor_id";
+    $result = mysqli_query($conn, $sql);
+
+    if ($result) {
+        header("Location: index.php?msg=Data deleted successfully");
+        exit();
+    } else {
+        echo "Failed: " . mysqli_error($conn);
+    }
 } else {
-  echo "Failed: " . mysqli_error($conn);
+    echo "Doctor ID not provided.";
 }
 ?>
