@@ -8,10 +8,9 @@ if (isset($_POST["submit"])) {
   $specialization = $_POST['specialization'];
   $license_no = $_POST['license_no'];
 
-  $sql = "UPDATE `hms` SET `doctor_id`='$doctor_id',`name`='$name',`specialization`='$specialization',`license_no`='$license_no' WHERE doctor_id = $doctor_id";
+  $sql = "UPDATE `hms` SET `doctor_id`='$doctor_id',`name`='$name',`specialization`='$specialization',`license_no`='$license_no' WHERE id = $doctor_id";
 
-  $result = mysqli_query($conn, $sql);
-
+ $result==$connection-> query($sql);
 
   if ($result) {
     header("Location: index.php?msg=Data updated successfully");
@@ -54,38 +53,35 @@ if (isset($_POST["submit"])) {
     </div>
 
     <?php
-    $sql = "SELECT * FROM `hms` WHERE doctor_id = $doctor_id LIMIT 1";
-    $result = mysqli_query($conn, $sql);
-    $row = mysqli_fetch_assoc($query);
+    $sql = "SELECT * FROM `hms` WHERE id = $doctor_id ";
+    $result = $connection->query($sql);
+     $row=$result->fetch_assoc();
     ?>
 
     <div class="container d-flex justify-content-center">
       <form action="" method="post" style="width:50vw; min-width:300px;">
         <div class="row mb-3">
           <div class="col">
-            <label class="form-label">First Name:</label>
-            <input type="text" class="form-control" name="first_name" value="<?php echo $row['first_name'] ?>">
+            <label class="form-label">Doctor _id:</label>
+            <input type="text" class="form-control" name="doctor_id" value="<?php echo $row['doctor_id'] ?>">
           </div>
 
           <div class="col">
-            <label class="form-label">Last Name:</label>
-            <input type="text" class="form-control" name="last_name" value="<?php echo $row['last_name'] ?>">
+            <label class="form-label">Name:</label>
+            <input type="text" class="form-control" name="name" value="<?php echo $row['name'] ?>">
           </div>
         </div>
 
         <div class="mb-3">
-          <label class="form-label">Email:</label>
-          <input type="email" class="form-control" name="email" value="<?php echo $row['email'] ?>">
+          <label class="form-label">specialization:</label>
+          <input type="text" class="form-control" name="specialization" value="<?php echo $row['specialization'] ?>">
         </div>
 
         <div class="form-group mb-3">
-          <label>Gender:</label>
           &nbsp;
-          <input type="radio" class="form-check-input" name="gender" id="male" value="male" <?php echo ($row["gender"] == 'male') ? "checked" : ""; ?>>
-          <label for="male" class="form-input-label">Male</label>
-          &nbsp;
-          <input type="radio" class="form-check-input" name="gender" id="female" value="female" <?php echo ($row["gender"] == 'female') ? "checked" : ""; ?>>
-          <label for="female" class="form-input-label">Female</label>
+             <label class="form-label">license_no:</label>
+          <input type="text" class="form-control" name="license_no" value="<?php echo $row['license_no'] ?>">
+          
         </div>
 
         <div>
